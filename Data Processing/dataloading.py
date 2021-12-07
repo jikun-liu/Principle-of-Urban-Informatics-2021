@@ -28,7 +28,7 @@ def dataloader(file_list, merge=False):
             df_dict[name] = pd.read_csv('restaurant-grade.csv')
 
     os.chdir(cwd)
-    print(os.getcwd())
+    
     if merge == False:
         return df_dict
     out_df = pd.DataFrame()

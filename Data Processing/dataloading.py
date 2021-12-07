@@ -7,6 +7,7 @@ import os
 # df_dict = dataloader(['covid','indoor','chir'])
 # df_covid = df_dict['covid']
 def dataloader(file_list, merge=False):
+    cwd = os.getcwd()
     os.chdir('../data')
     df_dict = {}
 
@@ -26,6 +27,8 @@ def dataloader(file_list, merge=False):
         elif name == "restaurant":
             df_dict[name] = pd.read_csv('restaurant-grade.csv')
 
+    os.chdir(cwd)
+    print(os.getcwd())
     if merge == False:
         return df_dict
     out_df = pd.DataFrame()

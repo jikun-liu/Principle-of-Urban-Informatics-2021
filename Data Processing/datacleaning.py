@@ -2,6 +2,7 @@ import pandas as pd
 import os
 
 os.chdir('../data')
+
 df = pd.read_csv('1RAW-DSNY_Monthly_Tonnage_Data.csv')
 df = df[['BOROUGH','MONTH','REFUSETONSCOLLECTED','PAPERTONSCOLLECTED','MGPTONSCOLLECTED']]
 df['MONTH'] = pd.to_datetime(df['MONTH'])
@@ -34,9 +35,12 @@ df.to_csv(path,index=False)
 
 df = pd.read_csv('1RAW-DOHMH_Indoor_Environmental_Complaints.csv')
 df = df.loc[df['Deleted']=='No']
-df = df[['Complaint_Number','Incident_Address_Borough','Incident_Address_Zip']]
+df = df[['Incident_Address_Borough','Incident_Address_Zip','Date_Received']]
 df.rename(columns={'Incident_Address_Borough':'Borough',
-                   'Incident_Address_Zip':'zip'}, inplace = True)
+                   'Incident_Address_Zip':'zip','Date_Received':'date'}, inplace = True)
+df['date'] = pd.to_datetime(df['date'])
+df['year'] = df['date'].dt.year
+df['month'] = df['date'].dt.month
 df.dropna(inplace=True)
 df.replace('Staten Island', 'Staten',inplace=True)
 path = os.getcwd()+'\\indoor-complaints.csv'

@@ -13,7 +13,7 @@ df_ton = df_dict['tonnage']
 df_covid = df_dict['covid']
 df_water = df_dict['water']
 df_indoor = df_dict['indoor']
-new_case_by_month = df_covid[['year','month','New Positives']].groupby(by=['year','month']).sum()
+new_case_by_month = df_covid[['year','month','Borough','New Positives']].groupby(by=['year','month','Borough']).sum()
 
 print('Restaurant grade:')
 # get restaurant correlation coefficients
@@ -31,7 +31,7 @@ for boro in Boroughs:
     grades = grades.fillna(0)
     covid_counts = []
     for m in target_month:
-        covid_counts.append(new_case_by_month.loc[target_year,m]['New Positives'])
+        covid_counts.append(new_case_by_month.loc[target_year,m,boro]['New Positives'])
     print('For borough',boro+':')
     coef_mat = np.corrcoef(grades,covid_counts)
     print(coef_mat[:,coef_mat.shape[0]-1])
@@ -52,7 +52,7 @@ def coef_by_borough(dataframe, title, list_var, method):
         agg.fillna(0,inplace=True)
         covid_counts = []
         for ym in dfs.index.unique():
-            covid_counts.append(new_case_by_month.loc[ym[0],ym[1]]['New Positives'])
+            covid_counts.append(new_case_by_month.loc[ym[0],ym[1],boro]['New Positives'])
 
         print('For borough',boro+':')
         coef_mat = np.corrcoef(agg,covid_counts)
